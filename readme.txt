@@ -2,7 +2,7 @@
 Contributors: Kuuak
 Requires at least: 4.3.1
 Tested up to: 4.3.1
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -29,5 +29,8 @@ To install, simply:
 2. The postboxes under the body are displayed in tabs
 
 == Changelog ==
+= 1.0.1 =
+Fix: Tabs not being created for new post
+
 = 1.0 =
 Initial version
