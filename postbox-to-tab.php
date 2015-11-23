@@ -68,7 +68,7 @@ if ( !class_exists( 'Postbox_to_tab' ) ) {
 		 */
 		public function postbox_to_tab_enqueue_files( $hook ) {
 
-			if ( 'post.php' != $hook ) return;
+			if ( 'post.php' != $hook && 'post-new.php' != $hook ) return;
 
 			wp_enqueue_script( 'postbox_to_tab_js', $this->directory_uri . 'js/postbox-to-tab.js', array('jquery'), $this->version );
 			wp_enqueue_style( 'postbox_to_tab_css', $this->directory_uri . 'css/postbox-to-tab.css', false, $this->version );
