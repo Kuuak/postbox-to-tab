@@ -71,6 +71,10 @@
 		}
 	}
 
+	/**
+	 * Sets and handle the sorting of postboxes in tab
+	 * @since TODO version
+	 */
 	function setSortable() {
 
 		$pbTabs.sortable({
