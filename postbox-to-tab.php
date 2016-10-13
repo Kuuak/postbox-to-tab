@@ -3,7 +3,7 @@
  * Plugin Name:				Postbox to Tab
  * Description: 			Convert the sortable post boxes into a tabbed menu.
  * Author: 						Felipe Paul Martins - Opus Magnum
- * Version: 					1.0.1
+ * Version: 					1.0.2
  * Author URI:				http://opusmagnum.ch
  * License:     			GPL-2.0+
  * License URI: 			http://www.gnu.org/licenses/gpl-2.0.txt
@@ -16,7 +16,7 @@
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @package   postbox-to-tab
- * @author    Felipe Paul Martins <fpmpusmagnum.ch>
+ * @author    Felipe Paul Martins <fpm@opusmagnum.ch>
  * @license   GPL-2.0+
  * @link      http://opusmagnum.ch
  */
@@ -47,7 +47,7 @@ if ( !class_exists( 'Postbox_to_tab' ) ) {
 		 */
 		public function postbox_to_tab_setup() {
 			$this->id = 'postbox_to_tab';
-			$this->version = '1.0.1';
+			$this->version = '1.0.2';
 			$this->directory_path = trailingslashit( plugin_dir_path( __FILE__ ) );
 			$this->directory_uri  = trailingslashit( plugin_dir_url(  __FILE__ ) );
 		}
@@ -70,7 +70,7 @@ if ( !class_exists( 'Postbox_to_tab' ) ) {
 
 			if ( 'post.php' != $hook && 'post-new.php' != $hook ) return;
 
-			wp_enqueue_script( 'postbox_to_tab_js', $this->directory_uri . 'js/postbox-to-tab.js', array('jquery'), $this->version );
+			wp_enqueue_script( 'postbox_to_tab_js', $this->directory_uri . 'js/postbox-to-tab.js', array('jquery', 'jquery-ui-sortable'), $this->version );
 			wp_enqueue_style( 'postbox_to_tab_css', $this->directory_uri . 'css/postbox-to-tab.css', false, $this->version );
 		}
 	}
