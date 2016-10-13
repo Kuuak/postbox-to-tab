@@ -40,7 +40,7 @@
 
 	/**
 	 * Update the shown postbox according to selected tab
-	 * @since TODO version
+	 * @since 1.0.2
 	 */
 	function change( event ) {
 		event.preventDefault();
@@ -56,7 +56,7 @@
 
 	/**
 	 * Hide or show the postboxes when screen option if updated
-	 * @since TODO version
+	 * @since 1.0.2
 	 */
 	function hideshow( event ) {
 
@@ -73,7 +73,7 @@
 
 	/**
 	 * Sets and handle the sorting of postboxes in tab
-	 * @since TODO version
+	 * @since 1.0.2
 	 */
 	function setSortable() {
 
