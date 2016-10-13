@@ -3,8 +3,8 @@
 	"use strict";
 
 	var normalContainer,
-			$postboxes,
-			$postboxTabs;
+			$pbs,
+			$pbTabs;
 
 	/**
 	 * Create the tab menu
@@ -12,30 +12,30 @@
 	 */
 	function init() {
 
-		var $postboxesTitles = normalContainer.find(".hndle"); //build the list of menu items
-		$postboxTabs = $("<ul>", {"id": "postbox_tabs", "class": ""});
+		var $tab,
+				$pbTitles = normalContainer.find(".hndle"); //build the list of menu items
+				$pbTabs = $("<ul>", {"id": "postbox_tabs", "class": ""});
 
-		$postboxes.each(function(i, el) {
+		$pbs.each(function(i, el) {
 
-			$(el).addClass( "postbox-"+i );
-
-			var $tab = $( "<li>", { "id": el.id +"_tab" } )
-			.append( $("<button>", {"data-tab":i}).text( $postboxesTitles[i].textContent ) );
+			$tab = $( "<li>", {"id": el.id +"_tab", "data-tab":i} ).text( $pbTitles[i].textContent );
 
 			if ( $(el).hasClass("hide-if-js") ) {
 				$tab.addClass("hide");
 			}
 
-			$postboxTabs.append($tab);
+			$pbTabs.append($tab);
 		});
 
-		normalContainer.before($postboxTabs);
-		$postboxTabs.find("li:not(.hide):first button").addClass("active");
+		normalContainer.before($pbTabs);
+		$pbTabs.find("li:not(.hide):first").addClass("active");
 
-		$postboxes.removeClass("active"); // Hide all post boxes, then display the first active one
+		$pbs.removeClass("active"); // Hide all post boxes, then display the first active one
 		normalContainer.find(".postbox:not(.hide-if-js):first").addClass("active");
 
 		normalContainer.addClass("postbox-tabs");
+
+		setSortable();
 	}
 
 	/**
@@ -45,13 +45,13 @@
 	function change( event ) {
 		event.preventDefault();
 
-		$postboxes.removeClass("active");
-		$(event.delegateTarget).find("button").removeClass("active");
+		$pbs.removeClass("active");
+		$(event.delegateTarget).children().removeClass("active");
 
 		var tab_id = this.getAttribute("data-tab");
 		$(this).addClass("active");
 
-		normalContainer.find(".postbox-" + tab_id).addClass("active");
+		normalContainer.children().eq(tab_id).addClass("active");
 	}
 
 	/**
@@ -64,22 +64,55 @@
 		target_tab.toggleClass("hide");
 
 		if ( target_tab.is(".hide") ) {
-			$postboxTabs.find("li:not(.hide):first button").click();
+			$pbTabs.find("li:not(.hide):first").click();
 		}
 		else {
 			target_tab.children("button").click();
 		}
 	}
 
+	function setSortable() {
+
+		$pbTabs.sortable({
+			axis: 'x',
+			opacity: 0.65,
+			cursor: 'move',
+			placeholder: 'placeholder',
+			forcePlaceholderSize: true,
+			update: function( event, ui ) {
+
+				var $movedPB,
+						i				= 0,
+						$el			= ui.item,
+						newPos	= $el.index(),
+						oldPos	= $el.data('tab');
+
+				$movedPB = $pbs.eq(oldPos).detach();
+				if ( 0 === newPos ) { normalContainer.prepend($movedPB); }
+				else if ( $pbs.length-1 === newPos) { normalContainer.append($movedPB); }
+				else { normalContainer.children().eq(newPos-1).after( $movedPB ); }
+
+				$pbs = normalContainer.children(); // Refresh the collection with the new order
+				$('#postbox_tabs').children().each(function(index, el) {
+					el.setAttribute( "data-tab", i );
+					i++;
+				});
+
+				// Trigger WP save postboxes order in DB
+				postboxes.save_order( pagenow );
+			},
+		});
+	}
+
 	$(document).ready(function() {
 
 		normalContainer = $("#normal-sortables");
-		$postboxes = normalContainer.find(".postbox");
+		$pbs = normalContainer.find(".postbox");
 
 		init();
 
 		/* behavior */
-		$postboxTabs.on( "click", "button", change );
+		$pbTabs.on( "click", "li", change );
 		$(".hide-postbox-tog").on("click", hideshow );
 	});
 
