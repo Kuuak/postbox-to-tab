@@ -1,9 +1,8 @@
+#postbox-container-2,
+#postbox-container-2 .postbox-tabs { position: relative; }
+
 #normal-sortables.postbox-tabs .handlediv,
 #normal-sortables.postbox-tabs .hndle { display: none !important; }
-
-#normal-sortables .active {
-	/*z-index: -1;*/
-}
 
 #postbox_tabs { margin: 0; }
 #postbox_tabs li {
@@ -49,3 +48,10 @@
 	height: 1px;
 	background-color: #fff;
 }
+
+#postbox-container-2 .postbox-tabs .postbox {
+	position: absolute;
+	width: 100%;
+	visibility: hidden;
+}
+#postbox-container-2 .postbox-tabs .postbox.active { visibility: visible; }

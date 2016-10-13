@@ -1,4 +1,6 @@
-!function($) {
+(function($) {
+
+	"use strict";
 
 	var normalContainer,
 			$postboxes,
@@ -8,18 +10,18 @@
 
 	function init() {
 
-		$postboxesTitles = normalContainer.find('.hndle'); //build the list of menu items
-		$postboxTabs = jQuery('<ul>', {'id': 'postbox_tabs', 'class': ''});
+		var $postboxesTitles = normalContainer.find('.hndle'); //build the list of menu items
+		$postboxTabs = $('<ul>', {'id': 'postbox_tabs', 'class': ''});
 
 		$postboxes.each(function(i, el) {
 
-			jQuery(el).addClass( 'postbox-'+i );
+			$(el).addClass( 'postbox-'+i );
 
-			var $tab = jQuery( '<li>', { 'id': el.id +'_tab' } )
-			.append( jQuery('<button>', {'data-tab':i}).text( $postboxesTitles[i].textContent ) );
+			var $tab = $( '<li>', { 'id': el.id +'_tab' } )
+			.append( $('<button>', {'data-tab':i}).text( $postboxesTitles[i].textContent ) );
 
-			if ( jQuery(el).hasClass('hide-if-js') ) {
-				$tab.addClass('hide')
+			if ( $(el).hasClass('hide-if-js') ) {
+				$tab.addClass("hide");
 			}
 
 			$postboxTabs.append($tab);
@@ -28,18 +30,15 @@
 		normalContainer.before($postboxTabs);
 		$postboxTabs.find("li:not(.hide):first button").addClass('active');
 
-		$postboxes.hide(); // Hide all post boxes, then display the first active one
-		normalContainer.find('.postbox:not(.hide-if-js):first').addClass('active').show()
+		$postboxes.removeClass('active'); // Hide all post boxes, then display the first active one
+		normalContainer.find('.postbox:not(.hide-if-js):first').addClass('active');
 
 		normalContainer.addClass('postbox-tabs');
-
-
-		// tabs.sortable({axis:'x',cursor:'move', containment:'parent', delay:150})
 	}
 
-	jQuery(document).ready(function() {
+	$(document).ready(function() {
 
-		normalContainer = jQuery('#normal-sortables');
+		normalContainer = $('#normal-sortables');
 		$postboxes = normalContainer.find('.postbox');
 
 		init();
@@ -49,16 +48,16 @@
 		$postboxTabs.on('click', 'button', function( e ) {
 			e.preventDefault();
 
-			$postboxes.removeClass('active').hide();
-			jQuery(e.delegateTarget).find('button').removeClass('active');
+			$postboxes.removeClass('active');
+			$(e.delegateTarget).find('button').removeClass('active');
 
-			tab_id = this.getAttribute('data-tab');
-			jQuery(this).addClass('active');
-			normalContainer.find('.postbox-' + tab_id).addClass('active').show();
+			var tab_id = this.getAttribute('data-tab');
+			$(this).addClass('active');
+			normalContainer.find('.postbox-' + tab_id).addClass('active');
 
 		});
 
-		jQuery('.hide-postbox-tog').on('click', function( e ) {
+		$('.hide-postbox-tog').on('click', function( e ) {
 
 			var target_tab = jQuery('#' + this.value +'_tab');
 			target_tab.toggleClass('hide');
@@ -71,4 +70,4 @@
 		});
 	});
 
-}(jQuery);
+}(jQuery));
