@@ -1,24 +1,17 @@
+#postbox-container-2,
+#postbox-container-2 .postbox-tabs { position: relative; }
+
 #normal-sortables.postbox-tabs .handlediv,
 #normal-sortables.postbox-tabs .hndle { display: none !important; }
 
-#normal-sortables .active {
-	/*z-index: -1;*/
-}
-
 #postbox_tabs { margin: 0; }
-#postbox_tabs li {
-	display: inline-block;
-	margin: 3px 3px 0 0;
-	padding: 0px;
-	border: none;
-}
-#postbox_tabs li.hide { display: none; }
 
-#postbox_tabs li button {
+
+#postbox_tabs li {
 	position: relative;
 	display: inline-block;
 	padding: 8px 12px;
-	margin-bottom: -1px;
+	margin: 3px 3px -1px 0;
 	border: 1px solid #dfdfdf;
 	border-bottom-color: #E5E5E5;
 	background-color: #EBEBEB;
@@ -28,17 +21,19 @@
 	-webkit-transition: background-color .2s cubic-bezier(0.645, 0.045, 0.355, 1);
 					transition: background-color .2s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
-#postbox_tabs li button:hover {
+#postbox_tabs li:hover {
 	cursor: pointer;
 	background-color: #fdfdfd;
 }
-#postbox_tabs li button.active {
+#postbox_tabs li.hide { display: none; }
+#postbox_tabs li.active {
 	color: #000;
+	cursor: move;
 	font-weight: bold;
 	background-color: #FFF;
 	border-bottom-color: #FFF;
 }
-#postbox_tabs li button.active:after {
+#postbox_tabs li.active:after {
 	content: " ";
 	position: absolute;
 	bottom: -1px;
@@ -49,3 +44,15 @@
 	height: 1px;
 	background-color: #fff;
 }
+
+
+#postbox_tabs li.placeholder {
+	border: 1px dashed #b4b9be
+}
+
+#postbox-container-2 .postbox-tabs .postbox {
+	position: absolute;
+	width: 100%;
+	visibility: hidden;
+}
+#postbox-container-2 .postbox-tabs .postbox.active { visibility: visible; }
