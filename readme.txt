@@ -1,8 +1,8 @@
 === Postbox to Tab ===
 Contributors: Kuuak
-Requires at least: 4.3.1
-Tested up to: 4.3.1
-Stable tag: 1.0.1
+Requires at least: 4.4
+Tested up to: 4.6.1
+Stable tag: 1.0.2
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -11,12 +11,13 @@ Convert the sortable post boxes into a tabbed menu.
 == Description ==
 Convert the sortable post boxes into a tabbed menu.
 
-Currently, only the postbox under the body are converted and they aren\'t sortable.
+Currently, only the postbox under the body (standard zone) are converted
 
 = Todo =
 - A settings page
 - Select all or specific post/page/custom post type
-- Restore the sort/drag&drop to the postbox
+- Allow the sort/drag&drop between postbox zones
+- Convert postbox in Advanced and Side zone
 
 == Installation ==
 To install, simply:
@@ -29,8 +30,13 @@ To install, simply:
 2. The postboxes under the body are displayed in tabs
 
 == Changelog ==
-= 1.0.1 =
-Fix: Tabs not being created for new post
 
-= 1.0 =
-Initial version
+= 1.0.2 - 13/10/2016 =
+* Add: Postboxes in tabs are now sortable
+* Fix: Postbox missing after Screen Options changes
+
+= 1.0.1 - 23/11/2015 =
+* Fix: Tabs not being created for new post
+
+= 1.0 - 21/11/2015 =
+* Initial version
