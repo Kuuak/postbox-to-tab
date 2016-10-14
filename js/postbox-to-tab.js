@@ -33,9 +33,9 @@
 			.before($pbTabs)
 			.addClass("postbox-tabs")
 			.children()
-				.removeClass('active closed');
-
-		normalContainer.children(":not(.hide-if-js):first").addClass("active");
+				.removeClass('active closed')
+				.filter(":not(.hide-if-js):first")
+					.addClass("active");
 
 		setSortable();
 		updateZoneHeight();
