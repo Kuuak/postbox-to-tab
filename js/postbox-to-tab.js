@@ -27,13 +27,15 @@
 			$pbTabs.append($tab);
 		});
 
-		normalContainer.before($pbTabs);
 		$pbTabs.find("li:not(.hide):first").addClass("active");
 
-		$pbs.removeClass("active"); // Hide all post boxes, then display the first active one
-		normalContainer.find(".postbox:not(.hide-if-js):first").addClass("active");
+		normalContainer
+			.before($pbTabs)
+			.addClass("postbox-tabs")
+			.children()
+				.removeClass('active closed');
 
-		normalContainer.addClass("postbox-tabs");
+		normalContainer.children(":not(.hide-if-js):first").addClass("active");
 
 		setSortable();
 	}
