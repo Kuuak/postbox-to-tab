@@ -2,9 +2,8 @@
 
 	"use strict";
 
-	var normalContainer,
-			$pbs,
-			$pbTabs;
+	var $pbsNormal,
+			$pbNormalTabs;
 
 	/**
 	 * Create the tab menu
@@ -12,26 +11,28 @@
 	 */
 	function init() {
 
-		var $tab,
-				$pbTitles = normalContainer.find(".hndle"); //build the list of menu items
-				$pbTabs = $("<ul>", {"id": "postbox_tabs", "class": ""});
+		var $tab;
 
-		$pbs.each(function(i, el) {
+		$pbNormalTabs	= $("<ul>", {"id": "postbox_normal_tabs", "class": "pbtt-tabs" });
 
-			$tab = $( "<li>", {"id": el.id +"_tab", "data-tab":i} ).text( $pbTitles[i].textContent );
+		$pbsNormal.children().each(function(i, el) {
 
-			if ( $(el).hasClass("hide-if-js") ) {
+			var $el = $(el);
+
+			$tab = $( "<li>", {"id": el.id +"_tab"} ).text( $el.children("h2").text() );
+
+			if ( $el.hasClass("hide-if-js") ) {
 				$tab.addClass("hide");
 			}
 
-			$pbTabs.append($tab);
+			$pbNormalTabs.append($tab);
 		});
 
-		$pbTabs.find("li:not(.hide):first").addClass("active");
+		$pbNormalTabs.children(":not(.hide):first").addClass("active");
 
-		normalContainer
-			.before($pbTabs)
-			.addClass("postbox-tabs")
+		$pbsNormal
+			.before($pbNormalTabs)
+			.addClass("pbtt-postboxes")
 			.children()
 				.removeClass('active closed')
 				.filter(":not(.hide-if-js):first")
@@ -48,13 +49,16 @@
 	function change( event ) {
 		event.preventDefault();
 
-		$pbs.removeClass("active");
-		$(event.delegateTarget).children().removeClass("active");
+		var $this = $(event.target);
 
-		var tab_id = this.getAttribute("data-tab");
-		$(this).addClass("active");
+		$this
+			.addClass("active")
+			.siblings()
+				.removeClass("active");
 
-		normalContainer.children().eq(tab_id).addClass("active");
+		$pbsNormal.children().removeClass("active");
+		$pbsNormal.children().eq( $this.index() ).addClass("active");
+
 		updateZoneHeight();
 	}
 
@@ -63,7 +67,7 @@
 	 * @since TODO version
 	 */
 	function updateZoneHeight() {
-		normalContainer.height( $pbs.filter('.active').height() );
+		$pbsNormal.height( $pbsNormal.children('.active').height() );
 	}
 
 	/**
@@ -72,11 +76,11 @@
 	 */
 	function hideshow( event ) {
 
-		var target_tab = jQuery("#" + this.value +"_tab");
+		var target_tab = $("#" + event.target.value +"_tab");
 		target_tab.toggleClass("hide");
 
 		if ( target_tab.is(".hide") ) {
-			$pbTabs.find("li:not(.hide):first").click();
+			$pbNormalTabs.find("li:not(.hide):first").click();
 		}
 		else {
 			target_tab.children("button").click();
@@ -91,46 +95,83 @@
 	 */
 	function setSortable() {
 
-		$pbTabs.sortable({
-			axis: 'x',
+		$pbNormalTabs.sortable({
+			// axis: 'x',
 			opacity: 0.65,
 			cursor: 'move',
-			placeholder: 'placeholder',
+			placeholder: 'pbtt-placeholder',
 			forcePlaceholderSize: true,
-			update: function( event, ui ) {
-
-				var $movedPB,
-						i				= 0,
-						$el			= ui.item,
-						newPos	= $el.index(),
-						oldPos	= $el.data('tab');
-
-				$movedPB = $pbs.eq(oldPos).detach();
-				if ( 0 === newPos ) { normalContainer.prepend($movedPB); }
-				else if ( $pbs.length-1 === newPos) { normalContainer.append($movedPB); }
-				else { normalContainer.children().eq(newPos-1).after( $movedPB ); }
-
-				$pbs = normalContainer.children(); // Refresh the collection with the new order
-				$('#postbox_tabs').children().each(function(index, el) {
-					el.setAttribute( "data-tab", i );
-					i++;
-				});
-
-				// Trigger WP save postboxes order in DB
-				postboxes.save_order( pagenow );
-			},
+			connectWith: '.meta-box-sortables:not(.pbtt-postboxes)',
+			start: sortStart,
+			update: sortUpdate,
 		});
+	}
+
+	/**
+	 * Add "original" information to the sort item
+	 * in order to be able to correctly sort at the end.
+	 *
+	 * @since TODO version
+	 *
+	 * @param Event		event	Reference to current event
+	 * @param Object	ui		jQuery UI object
+	 */
+	function sortStart( event, ui ) {
+
+		ui.item.data( {
+			'pos'		: ui.item.index(),
+			'parent': ui.item.parent().prop('id'),
+		});
+
+	}
+
+	/**
+	* Sort and move correctly the postbox according to sorted/moved tab
+	*
+	* @since TODO version
+	*
+	* @param Event		event	Reference to current event
+	* @param Object	ui		jQuery UI object
+	*/
+	function sortUpdate( event, ui ) {
+
+		var $el				= ui.item,
+				newPos		= $el.index(),
+				oldPos		= $el.data('pos'),
+				oldParent	= $el.data("parent"),
+				newParent	= $el.parent().prop('id'),
+				nbTabs		= $pbsNormal.children().length-1,
+
+				$movedPB	= $pbsNormal.children().eq(oldPos).detach();
+
+		if ( oldParent === newParent ) {
+		// Sorted in the same zone
+			if			( 0 		 === newPos )	{ $pbsNormal.prepend($movedPB); }
+			else if	( nbTabs === newPos )	{ $pbsNormal.append($movedPB); }
+			else													{ $pbsNormal.children().eq(newPos-1).after( $movedPB ); }
+		}
+		else {
+		// Moved to different zone
+			$el
+				.after( $movedPB )
+				.remove();
+
+			$pbNormalTabs.children(":not(.hide):first").addClass("active");
+			$pbsNormal.children(":not(.hide-if-js):first").addClass("active");
+		}
+
+		// Trigger WP save postboxes order in DB
+		postboxes.save_order( pagenow );
 	}
 
 	$(document).ready(function() {
 
-		normalContainer = $("#normal-sortables");
-		$pbs = normalContainer.find(".postbox");
+		$pbsNormal = $("#normal-sortables");
 
 		init();
 
 		/* behavior */
-		$pbTabs.on( "click", "li", change );
+		$pbNormalTabs.on( "click", "li", change );
 		$(".hide-postbox-tog").on("click", hideshow );
 	});
 

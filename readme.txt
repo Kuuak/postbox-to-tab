@@ -16,7 +16,7 @@ Currently, only the postbox under the body (standard zone) are converted
 = Todo =
 - A settings page
 - Select all or specific post/page/custom post type
-- Allow the sort/drag&drop between postbox zones
+- Improve sort/drag&drop between postbox zones (from non PBTT to PBTT)
 - Convert postbox in Advanced and Side zone
 
 == Installation ==
