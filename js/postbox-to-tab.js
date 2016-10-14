@@ -38,6 +38,7 @@
 		normalContainer.children(":not(.hide-if-js):first").addClass("active");
 
 		setSortable();
+		updateZoneHeight();
 	}
 
 	/**
@@ -54,6 +55,15 @@
 		$(this).addClass("active");
 
 		normalContainer.children().eq(tab_id).addClass("active");
+		updateZoneHeight();
+	}
+
+	/**
+	 * Update the postbox container height
+	 * @since TODO version
+	 */
+	function updateZoneHeight() {
+		normalContainer.height( $pbs.filter('.active').height() );
 	}
 
 	/**
@@ -71,6 +81,8 @@
 		else {
 			target_tab.children("button").click();
 		}
+
+		updateZoneHeight();
 	}
 
 	/**
