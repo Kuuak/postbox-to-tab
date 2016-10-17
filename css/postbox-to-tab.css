@@ -1,19 +1,22 @@
-#postbox-container-2,
-#postbox-container-2 .pbtt-postboxes { position: relative; }
-#postbox-container-2 .pbtt-postboxes { margin-bottom: 20px; }
+.postbox-container,
+.postbox-container .pbtt-postboxes { position: relative; }
+.postbox-container .pbtt-postboxes { margin-bottom: 20px; }
 
-#normal-sortables.pbtt-postboxes .handlediv,
-#normal-sortables.pbtt-postboxes .hndle { display: none !important; }
+.postbox-container .pbtt-postboxes .handlediv,
+.postbox-container .pbtt-postboxes .hndle { display: none !important; }
 
-#postbox-container-2 .pbtt-postboxes .postbox {
+.postbox-container .pbtt-postboxes .postbox {
 	position: absolute;
 	width: 100%;
 	visibility: hidden;
 }
-#postbox-container-2 .pbtt-postboxes .postbox.active { visibility: visible; }
+.postbox-container .pbtt-postboxes .postbox.active { visibility: visible; }
+
+.pbtt-postboxes .post-format-icon::before,
+.pbtt-postboxes .post-state-format::before { transition-property: color; }
+
 
 .pbtt-tabs { margin: 0; }
-
 
 .pbtt-tabs li {
 	position: relative;

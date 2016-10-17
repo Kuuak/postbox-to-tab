@@ -14,7 +14,7 @@ Convert the sortable post boxes into a tabbed menu.
 Currently, only the postbox under the body (standard zone) are converted
 
 = Todo =
-- Convert postbox in Advanced and Side zone
+
 
 == Installation ==
 To install, simply:
