@@ -6,32 +6,32 @@
 			$pbNormalTabs;
 
 	/**
+	 * Helper fonction to test if variable is set and not null
+	 *
+	 * @since TODO version
+	 *
+	 * @param	 mixed variable
+	 * @return	bool
+	 */
+	function isset( variable ) {
+
+		if ( undefined === variable ) { return false; }
+		else if ( null === variable ) { return false; }
+
+		return true;
+	}
+
+	/**
 	 * Create the tab menu
 	 * @since 1.0
 	 */
 	function init() {
 
-		var $tab;
+		$pbsNormal = $("#normal-sortables");
 
-		$pbNormalTabs	= $("<ul>", {"id": "postbox_normal_tabs", "class": "pbtt-tabs" });
-
-		$pbsNormal.children().each(function(i, el) {
-
-			var $el = $(el);
-
-			$tab = $( "<li>", {"id": el.id +"_tab"} ).text( $el.children("h2").text() );
-
-			if ( $el.hasClass("hide-if-js") ) {
-				$tab.addClass("hide");
-			}
-
-			$pbNormalTabs.append($tab);
-		});
-
-		$pbNormalTabs.children(":not(.hide):first").addClass("active");
+		initTabs();
 
 		$pbsNormal
-			.before($pbNormalTabs)
 			.addClass("pbtt-postboxes")
 			.children()
 				.removeClass('active closed')
@@ -40,6 +40,40 @@
 
 		setSortable();
 		updateZoneHeight();
+	}
+
+	/**
+	 * Create the tabs according to visible postboxes in zone
+	 * @since TODO version
+	 */
+	function initTabs() {
+
+		// Create tabs container or remove its children
+		if ( !isset($pbNormalTabs) ) {
+			$pbNormalTabs = $("<ul>", {"id": "postbox_normal_tabs", "class": "pbtt-tabs" });
+			$pbsNormal.before($pbNormalTabs);
+		}
+		else {
+			$pbNormalTabs.children().remove();
+		}
+
+		var $el,
+				$tab;
+
+		$pbsNormal.children().each(function(i, el) {
+
+			$el		= $(el);
+			$tab	= $( "<li>", {"id": el.id +"_tab"} ).text( $el.children("h2").text() );
+
+			if ( $el.hasClass("hide-if-js") ) {
+				$tab.addClass("hide");
+			}
+
+			$pbNormalTabs.append($tab);
+		});
+
+		// Activate first available tab
+		$pbNormalTabs.children(":not(.hide):first").addClass("active");
 	}
 
 	/**
@@ -158,21 +192,54 @@
 
 			$pbNormalTabs.children(":not(.hide):first").addClass("active");
 			$pbsNormal.children(":not(.hide-if-js):first").addClass("active");
+
+			updateZoneHeight();
 		}
 
 		// Trigger WP save postboxes order in DB
 		postboxes.save_order( pagenow );
 	}
 
-	$(document).ready(function() {
+	/**
+	 * Update the tabs when new postbox from different zone
+	 * @since TODO version
+	 */
+	function receivePostbox() {
 
-		$pbsNormal = $("#normal-sortables");
+		var pbsNormal = document.getElementById( 'normal-sortables' );
+
+		// create an observer instance
+		var observer = new MutationObserver(function(mutations) {
+
+			if ( 2 === mutations.length &&
+				isset(mutations[0]) && isset(mutations[0].addedNodes[0]) && mutations[0].addedNodes[0].classList.contains('postbox') &&
+				isset(mutations[1]) && isset(mutations[1].removedNodes[0]) && mutations[1].removedNodes[0].classList.contains('sortable-placeholder') ) {
+
+					initTabs();
+
+					$pbsNormal
+						.children(":not(.hide-if-js):first")
+						.addClass("active")
+						.siblings()
+							.removeClass('active');
+
+					updateZoneHeight();
+			}
+		});
+
+		// pass in the target node, as well as the observer options
+		observer.observe( pbsNormal, { childList: true } );
+	}
+
+	$(document).ready(function() {
 
 		init();
 
 		/* behavior */
 		$pbNormalTabs.on( "click", "li", change );
 		$(".hide-postbox-tog").on("click", hideshow );
+
+		receivePostbox();
 	});
 
 }(jQuery));
