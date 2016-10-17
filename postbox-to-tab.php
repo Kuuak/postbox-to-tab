@@ -24,6 +24,18 @@
 /* Prevent loading this file directly */
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Add default options on plugin activation.
+ * @since TODO version
+ */
+function postbox_to_tab_activate() {
+
+	add_option( 'pbtt_zone', array('normal') );
+	add_option( 'pbtt_posttype', array('post', 'page') );
+}
+register_activation_hook( __FILE__, 'postbox_to_tab_activate' );
+
+
 if ( !class_exists( 'Postbox_to_tab' ) ) {
 
 	/**
