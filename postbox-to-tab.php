@@ -76,8 +76,12 @@ if ( !class_exists( 'Postbox_to_tab' ) ) {
 			if ( !(is_array($posttypes) && in_array(get_post_type(), $posttypes)) )
 				return;
 
-			wp_enqueue_script( 'postbox_to_tab_js', $this->directory_uri . 'js/postbox-to-tab.js', array('jquery', 'jquery-ui-sortable'), $this->version );
-			wp_enqueue_style( 'postbox_to_tab_css', $this->directory_uri . 'css/postbox-to-tab.css', false, $this->version );
+			wp_enqueue_script( 'pbtt_js', $this->directory_uri . 'js/pbtt.js', array('jquery', 'jquery-ui-sortable'), $this->version );
+			wp_enqueue_style( 'pbtt_css', $this->directory_uri . 'css/pbtt.css', false, $this->version );
+
+			if ( is_array($zones = get_option('pbtt_zone')) ) {
+				wp_localize_script( 'pbtt_js', 'pbtt', array_flip($zones) );
+			}
 		}
 	}
 }
