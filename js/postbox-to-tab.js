@@ -2,7 +2,7 @@
 
 	"use strict";
 
-	var $pbsNormal,
+	var pbZones,
 			$pbNormalTabs;
 
 	/**
@@ -27,40 +27,46 @@
 	 */
 	function init() {
 
-		$pbsNormal = $("#normal-sortables");
+		for ( var zone in pbtt ) {
+			pbtt[zone] = {
+				tabs		: $("<ul>", {"id": "pbtt_tabs_"+zone, "class": "pbtt-tabs" }),
+				wrapper	: $("#"+zone+"-sortables"),
+			};
 
-		initTabs();
+			setTabs( zone );
 
-		$pbsNormal
-			.addClass("pbtt-postboxes")
-			.children()
-				.removeClass('active closed')
-				.filter(":not(.hide-if-js):first")
-					.addClass("active");
+			pbtt[zone].wrapper
+				.before(pbtt[zone].tabs)
+				.addClass("pbtt-postboxes")
+				.children()
+					.removeClass('active closed')
+					.filter(":not(.hide-if-js):first")
+						.addClass("active");
+
+			updateHeight( pbtt[zone].wrapper );
+		}
+
+		// Events
+		$(".pbtt-tabs").on( "click", "li", changeActive );
+		$(".hide-postbox-tog").on("click", hideshow );
 
 		setSortable();
-		updateZoneHeight();
+		receivePostbox();
 	}
 
 	/**
 	 * Create the tabs according to visible postboxes in zone
 	 * @since TODO version
 	 */
-	function initTabs() {
+	function setTabs( zone ) {
 
-		// Create tabs container or remove its children
-		if ( !isset($pbNormalTabs) ) {
-			$pbNormalTabs = $("<ul>", {"id": "postbox_normal_tabs", "class": "pbtt-tabs" });
-			$pbsNormal.before($pbNormalTabs);
-		}
-		else {
-			$pbNormalTabs.children().remove();
-		}
+		// Clean tabs
+		pbtt[zone].tabs.children().remove();
 
 		var $el,
 				$tab;
 
-		$pbsNormal.children().each(function(i, el) {
+		pbtt[zone].wrapper.children().each(function(i, el) {
 
 			$el		= $(el);
 			$tab	= $( "<li>", {"id": el.id +"_tab"} ).text( $el.children("h2").text() );
@@ -69,39 +75,40 @@
 				$tab.addClass("hide");
 			}
 
-			$pbNormalTabs.append($tab);
+			pbtt[zone].tabs.append($tab);
 		});
 
 		// Activate first available tab
-		$pbNormalTabs.children(":not(.hide):first").addClass("active");
+		pbtt[zone].tabs.children(":not(.hide):first").addClass("active");
 	}
 
 	/**
 	 * Update the shown postbox according to selected tab
 	 * @since 1.0.2
 	 */
-	function change( event ) {
+	function changeActive( event ) {
 		event.preventDefault();
 
-		var $this = $(event.target);
+		var $this					= $(event.target),
+				$zoneWrapper	= $(event.delegateTarget).next('.pbtt-postboxes');
 
 		$this
 			.addClass("active")
 			.siblings()
 				.removeClass("active");
 
-		$pbsNormal.children().removeClass("active");
-		$pbsNormal.children().eq( $this.index() ).addClass("active");
+		$zoneWrapper.children().removeClass("active");
+		$zoneWrapper.children().eq( $this.index() ).addClass("active");
 
-		updateZoneHeight();
+		updateHeight( $zoneWrapper );
 	}
 
 	/**
 	 * Update the postbox container height
 	 * @since TODO version
 	 */
-	function updateZoneHeight() {
-		$pbsNormal.height( $pbsNormal.children('.active').height() );
+	function updateHeight( $zoneWrapper ) {
+		$zoneWrapper.height( $zoneWrapper.children('.active').height() );
 	}
 
 	/**
@@ -110,17 +117,19 @@
 	 */
 	function hideshow( event ) {
 
-		var target_tab = $("#" + event.target.value +"_tab");
-		target_tab.toggleClass("hide");
+		var $tab			= $("#" + event.target.value +"_tab"),
+				$wrapper	= $("#" + event.target.value).parent();
 
-		if ( target_tab.is(".hide") ) {
-			$pbNormalTabs.find("li:not(.hide):first").click();
+		$tab.toggleClass("hide");
+
+		if ( $tab.is(".hide") ) {
+			$tab.siblings(":not(.hide):first").click();
 		}
 		else {
-			target_tab.children("button").click();
+			$tab.click();
 		}
 
-		updateZoneHeight();
+		updateHeight( $wrapper );
 	}
 
 	/**
@@ -129,13 +138,14 @@
 	 */
 	function setSortable() {
 
-		$pbNormalTabs.sortable({
-			// axis: 'x',
+		var selectors = '#pbtt_tabs_'+ Object.keys(pbtt).join(',#pbtt_tabs_');
+
+		$(selectors).sortable({
 			opacity: 0.65,
 			cursor: 'move',
 			placeholder: 'pbtt-placeholder',
 			forcePlaceholderSize: true,
-			connectWith: '.meta-box-sortables:not(.pbtt-postboxes)',
+			connectWith: '.meta-box-sortables:not(.pbtt-postboxes), .pbtt-tabs',
 			start: sortStart,
 			update: sortUpdate,
 		});
@@ -169,32 +179,44 @@
 	*/
 	function sortUpdate( event, ui ) {
 
-		var $el				= ui.item,
-				newPos		= $el.index(),
+		var $el				= ui.item;
+
+		var	newPos		= $el.index(),
 				oldPos		= $el.data('pos'),
 				oldParent	= $el.data("parent"),
 				newParent	= $el.parent().prop('id'),
-				nbTabs		= $pbsNormal.children().length-1,
+				oldZone		= oldParent.replace("pbtt_tabs_", ""),
+				newZone		= newParent.replace("pbtt_tabs_", ""),
 
-				$movedPB	= $pbsNormal.children().eq(oldPos).detach();
+				$movedPB	= pbtt[oldZone].wrapper.children().eq(oldPos).detach();
 
-		if ( oldParent === newParent ) {
-		// Sorted in the same zone
-			if			( 0 		 === newPos )	{ $pbsNormal.prepend($movedPB); }
-			else if	( nbTabs === newPos )	{ $pbsNormal.append($movedPB); }
-			else													{ $pbsNormal.children().eq(newPos-1).after( $movedPB ); }
+		if ( $("#"+newParent).is('.pbtt-tabs') ) {
+
+			var nbTabs = $el.siblings().length;
+
+			if			( 0 		 === newPos )	{ pbtt[newZone].wrapper.prepend($movedPB); }
+			else if	( nbTabs === newPos )	{ pbtt[newZone].wrapper.append($movedPB); }
+			else													{ pbtt[newZone].wrapper.children().eq(newPos-1).after( $movedPB ); }
+			updateHeight( pbtt[newZone].wrapper );
+
+			if ( oldZone !== newZone ) {
+				pbtt[oldZone].tabs.children(":not(.hide):first").addClass("active");
+				pbtt[oldZone].wrapper.children(":not(.hide-if-js):first").addClass("active");
+				updateHeight( pbtt[oldZone].wrapper );
+			}
 		}
 		else {
-		// Moved to different zone
+		// Moved to different zone which is not tabbed
 			$el
 				.after( $movedPB )
 				.remove();
 
-			$pbNormalTabs.children(":not(.hide):first").addClass("active");
-			$pbsNormal.children(":not(.hide-if-js):first").addClass("active");
+			pbtt[oldZone].tabs.children(":not(.hide):first").addClass("active");
+			pbtt[oldZone].wrapper.children(":not(.hide-if-js):first").addClass("active");
 
-			updateZoneHeight();
+			updateHeight( pbtt[oldZone].wrapper );
 		}
+
 
 		// Trigger WP save postboxes order in DB
 		postboxes.save_order( pagenow );
@@ -206,8 +228,6 @@
 	 */
 	function receivePostbox() {
 
-		var pbsNormal = document.getElementById( 'normal-sortables' );
-
 		// create an observer instance
 		var observer = new MutationObserver(function(mutations) {
 
@@ -215,31 +235,30 @@
 				isset(mutations[0]) && isset(mutations[0].addedNodes[0]) && mutations[0].addedNodes[0].classList.contains('postbox') &&
 				isset(mutations[1]) && isset(mutations[1].removedNodes[0]) && mutations[1].removedNodes[0].classList.contains('sortable-placeholder') ) {
 
-					initTabs();
+					var zone = mutations[0].target.id.replace( "-sortables", "");
 
-					$pbsNormal
+					setTabs( zone );
+
+					pbtt[zone].wrapper
 						.children(":not(.hide-if-js):first")
 						.addClass("active")
 						.siblings()
 							.removeClass('active');
 
-					updateZoneHeight();
+					updateHeight( pbtt[zone].wrapper );
 			}
 		});
 
-		// pass in the target node, as well as the observer options
-		observer.observe( pbsNormal, { childList: true } );
+		for (var zone in pbtt) {
+			observer.observe( document.getElementById( zone+"-sortables" ), { childList: true } );
+		}
 	}
 
 	$(document).ready(function() {
 
-		init();
-
-		/* behavior */
-		$pbNormalTabs.on( "click", "li", change );
-		$(".hide-postbox-tog").on("click", hideshow );
-
-		receivePostbox();
+		if ( isset(pbtt) && Object.keys(pbtt).length ) {
+			init();
+		}
 	});
 
 }(jQuery));
