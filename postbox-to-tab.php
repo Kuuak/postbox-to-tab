@@ -59,6 +59,7 @@ if ( !class_exists( 'Postbox_to_tab' ) ) {
 		public function postbox_to_tab_init() {
 
 			add_action('admin_enqueue_scripts', array( $this, 'postbox_to_tab_enqueue_files') );
+			require_once $this->directory_path .'options.php';
 		}
 
 		/**
