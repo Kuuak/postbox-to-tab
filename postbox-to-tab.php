@@ -15,10 +15,10 @@
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @package   postbox-to-tab
- * @author    Felipe Paul Martins <fpm@opusmagnum.ch>
- * @license   GPL-2.0+
- * @link      http://opusmagnum.ch
+ * @package		postbox-to-tab
+ * @author		Felipe Paul Martins <fpm@opusmagnum.ch>
+ * @license		GPL-2.0+
+ * @link			http://opusmagnum.ch
  */
 
 /* Prevent loading this file directly */
@@ -27,9 +27,9 @@ defined( 'ABSPATH' ) || exit;
 if ( !class_exists( 'Postbox_to_tab' ) ) {
 
 	/**
-   * Class Postbox_to_tab
-   * @since 1.0
-   */
+	 * Class Postbox_to_tab
+	 * @since 1.0
+	 */
 	class Postbox_to_tab {
 
 		/**
@@ -37,37 +37,37 @@ if ( !class_exists( 'Postbox_to_tab' ) ) {
 		 * @since  1.0
 		 */
 		public function __construct() {
-			add_action( 'plugins_loaded', array( $this, 'postbox_to_tab_setup' ), 1 );
-			add_action( 'plugins_loaded', array( $this, 'postbox_to_tab_init' ), 10 );
+			add_action( 'plugins_loaded', array( $this, 'pbtt_setup' ), 1 );
+			add_action( 'plugins_loaded', array( $this, 'pbtt_init' ), 10 );
 		}
 
 		/**
 		 * Setup ID, Version, Directory path, and URI
 		 * @since  1.0
 		 */
-		public function postbox_to_tab_setup() {
-			$this->id = 'postbox_to_tab';
-			$this->version = '1.0.2';
-			$this->directory_path = trailingslashit( plugin_dir_path( __FILE__ ) );
-			$this->directory_uri  = trailingslashit( plugin_dir_url(  __FILE__ ) );
+		public function pbtt_setup() {
+			$this->id							= 'pbtt';
+			$this->version				= '1.0.2';
+			$this->directory_path	= trailingslashit( plugin_dir_path( __FILE__ ) );
+			$this->directory_uri	= trailingslashit( plugin_dir_url(  __FILE__ ) );
 		}
 
 		/**
 		 * Init the plugin functions
-		 * @since  1.0
+		 * @since	1.0
 		 */
-		public function postbox_to_tab_init() {
+		public function pbtt_init() {
 
-			add_action('admin_enqueue_scripts', array( $this, 'postbox_to_tab_enqueue_files') );
 			require_once $this->directory_path .'options.php';
+			add_action('admin_enqueue_scripts', array( $this, 'pbtt_enqueue_files') );
 		}
 
 		/**
 		 * Enqueuing js/css files only in edition page
-		 * @since  1.0
-		 * @param string $hook Hook suffix for the current admin page.
+		 * @since	1.0
+		 * @param	string $hook Hook suffix for the current admin page.
 		 */
-		public function postbox_to_tab_enqueue_files( $hook ) {
+		public function pbtt_enqueue_files( $hook ) {
 
 			if ( !in_array( $hook, ['post.php', 'post-new.php']) )
 				return;
