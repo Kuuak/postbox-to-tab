@@ -74,6 +74,7 @@ if ( !class_exists( 'Postbox_to_tab' ) ) {
 
 			require_once $this->directory_path .'options.php';
 			add_action('admin_enqueue_scripts', array( $this, 'pbtt_enqueue_files') );
+			add_filter('plugin_action_links_'. plugin_basename(__FILE__), array( $this, 'pbtt_options_link') );
 		}
 
 		/**
@@ -96,6 +97,19 @@ if ( !class_exists( 'Postbox_to_tab' ) ) {
 			if ( is_array($zones = get_option('pbtt_zone')) ) {
 				wp_localize_script( 'pbtt_js', 'pbtt', array_flip($zones) );
 			}
+		}
+
+		/**
+		 * Add options action link on plugin page
+		 *
+		 * @since TODO version
+		 *
+		 * @param		array	$links	An array of plugin action links
+		 * @return	array					Array with extra setting link
+		 */
+		public function pbtt_options_link( $links ) {
+			$links[] = sprintf( '<a href="tools.php?page=pbtt">%s</a>', __("Options", 'pbtt') );
+			return $links;
 		}
 	}
 }
