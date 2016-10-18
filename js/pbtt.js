@@ -8,7 +8,7 @@
 	/**
 	 * Helper fonction to test if variable is set and not null
 	 *
-	 * @since TODO version
+	 * @since 1.1
 	 *
 	 * @param	 mixed variable
 	 * @return	bool
@@ -56,7 +56,7 @@
 
 	/**
 	 * Create the tabs according to visible postboxes in zone
-	 * @since TODO version
+	 * @since 1.1
 	 */
 	function setTabs( zone ) {
 
@@ -105,7 +105,7 @@
 
 	/**
 	 * Update the postbox container height
-	 * @since TODO version
+	 * @since 1.1
 	 */
 	function updateHeight( $zoneWrapper ) {
 		$zoneWrapper.height( $zoneWrapper.children('.active').height() );
@@ -155,7 +155,7 @@
 	 * Add "original" information to the sort item
 	 * in order to be able to correctly sort at the end.
 	 *
-	 * @since TODO version
+	 * @since 1.1
 	 *
 	 * @param Event		event	Reference to current event
 	 * @param Object	ui		jQuery UI object
@@ -172,7 +172,7 @@
 	/**
 	* Sort and move correctly the postbox according to sorted/moved tab
 	*
-	* @since TODO version
+	* @since 1.1
 	*
 	* @param Event		event	Reference to current event
 	* @param Object	ui		jQuery UI object
@@ -223,7 +223,7 @@
 
 	/**
 	 * Update the tabs when new postbox from different zone
-	 * @since TODO version
+	 * @since 1.1
 	 */
 	function receivePostbox() {
 

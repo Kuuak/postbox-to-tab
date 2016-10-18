@@ -3,7 +3,7 @@
  * Plugin Name:		Postbox to Tab
  * Description: 	Convert postboxes vertical list into a tabbed menu.
  * Author: 				Felipe Paul Martins - Opus Magnum
- * Version: 			1.0.2
+ * Version: 			1.1
  * Author URI:		https://opusmagnum.ch
  * License:				GPL-2.0+
  * License URI:		http://www.gnu.org/licenses/gpl-2.0.txt
@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Add default options on plugin activation.
- * @since TODO version
+ * @since 1.1
  */
 function postbox_to_tab_activate() {
 
@@ -61,7 +61,7 @@ if ( !class_exists( 'Postbox_to_tab' ) ) {
 		 */
 		public function pbtt_setup() {
 			$this->id							= 'pbtt';
-			$this->version				= '1.0.2';
+			$this->version				= '1.1';
 			$this->directory_path	= trailingslashit( plugin_dir_path( __FILE__ ) );
 			$this->directory_uri	= trailingslashit( plugin_dir_url(  __FILE__ ) );
 		}
@@ -102,7 +102,7 @@ if ( !class_exists( 'Postbox_to_tab' ) ) {
 		/**
 		 * Add options action link on plugin page
 		 *
-		 * @since TODO version
+		 * @since 1.1
 		 *
 		 * @param		array	$links	An array of plugin action links
 		 * @return	array					Array with extra setting link
