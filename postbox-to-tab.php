@@ -1,26 +1,26 @@
 <?php
 /**
- * Plugin Name:				Postbox to Tab
- * Description: 			Convert the sortable post boxes into a tabbed menu.
- * Author: 						Felipe Paul Martins - Opus Magnum
- * Version: 					1.0.2
- * Author URI:				http://opusmagnum.ch
- * License:     			GPL-2.0+
- * License URI: 			http://www.gnu.org/licenses/gpl-2.0.txt
+ * Plugin Name:		Postbox to Tab
+ * Description: 	Convert the sortable post boxes into a tabbed menu.
+ * Author: 				Felipe Paul Martins - Opus Magnum
+ * Version: 			1.0.2
+ * Author URI:		https://opusmagnum.ch
+ * License:				GPL-2.0+
+ * License URI:		http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:		pbtt
  * Domain Path:		/languages
  *
- * This program is free software; you can redistribute it and/or modify it under the terms of the GNU
+ * Postbox to Tab is free software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License version 2, as published by the Free Software Foundation.  You may NOT assume
  * that you can use any other version of the GPL.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * Postbox to Tab is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @package		postbox-to-tab
  * @author		Felipe Paul Martins <fpm@opusmagnum.ch>
  * @license		GPL-2.0+
- * @link			http://opusmagnum.ch
+ * @link			https://opusmagnum.ch
  */
 
 /* Prevent loading this file directly */
