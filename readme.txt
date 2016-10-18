@@ -3,7 +3,7 @@ Contributors: Kuuak
 Tags: admin, post, page, custom post type, editor, edit, plugin, postbox, tab
 Requires at least: 4.4
 Tested up to: 4.6.1
-Stable tag: 1.0.2
+Stable tag: 1.1
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -27,6 +27,13 @@ To install, simply:
 4. Plugin options, possibility to enable it, or not, for each post types (including custom post types) and for each postbox zone.
 
 == Changelog ==
+
+= 1.1 - 18/10/2016 =
+* Add: Postbox in the three zones are converted
+* Add: Option page to select where (post types and zones) to enable the plugin
+* Add: Sorting between different zones, as well when one of the list is not vonverted to tabs
+* Add: Internationalization, EN and FR
+* Fix: Minor bugs
 
 = 1.0.2 - 13/10/2016 =
 * Add: Postboxes in tabs are now sortable
