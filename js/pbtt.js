@@ -8,7 +8,7 @@
 	/**
 	 * Helper fonction to test if variable is set and not null
 	 *
-	 * @since TODO version
+	 * @since 1.1
 	 *
 	 * @param	 mixed variable
 	 * @return	bool
@@ -56,7 +56,7 @@
 
 	/**
 	 * Create the tabs according to visible postboxes in zone
-	 * @since TODO version
+	 * @since 1.1
 	 */
 	function setTabs( zone ) {
 
@@ -105,7 +105,7 @@
 
 	/**
 	 * Update the postbox container height
-	 * @since TODO version
+	 * @since 1.1
 	 */
 	function updateHeight( $zoneWrapper ) {
 		$zoneWrapper.height( $zoneWrapper.children('.active').height() );
@@ -155,7 +155,7 @@
 	 * Add "original" information to the sort item
 	 * in order to be able to correctly sort at the end.
 	 *
-	 * @since TODO version
+	 * @since 1.1
 	 *
 	 * @param Event		event	Reference to current event
 	 * @param Object	ui		jQuery UI object
@@ -172,16 +172,19 @@
 	/**
 	* Sort and move correctly the postbox according to sorted/moved tab
 	*
-	* @since TODO version
+	* @since 1.1
 	*
 	* @param Event		event	Reference to current event
 	* @param Object	ui		jQuery UI object
 	*/
 	function sortUpdate( event, ui ) {
 
-		var $el				= ui.item;
+		// Avoid the second event fire when sorting from connected lists
+		if ( isset(ui.sender) )
+			return;
 
-		var	newPos		= $el.index(),
+		var $el				= ui.item,
+				newPos		= $el.index(),
 				oldPos		= $el.data('pos'),
 				oldParent	= $el.data("parent"),
 				newParent	= $el.parent().prop('id'),
@@ -197,12 +200,11 @@
 			if			( 0 		 === newPos )	{ pbtt[newZone].wrapper.prepend($movedPB); }
 			else if	( nbTabs === newPos )	{ pbtt[newZone].wrapper.append($movedPB); }
 			else													{ pbtt[newZone].wrapper.children().eq(newPos-1).after( $movedPB ); }
-			updateHeight( pbtt[newZone].wrapper );
+
+			$el.click();
 
 			if ( oldZone !== newZone ) {
-				pbtt[oldZone].tabs.children(":not(.hide):first").addClass("active");
-				pbtt[oldZone].wrapper.children(":not(.hide-if-js):first").addClass("active");
-				updateHeight( pbtt[oldZone].wrapper );
+				pbtt[oldZone].tabs.children(":not(.hide):first").click();
 			}
 		}
 		else {
@@ -211,10 +213,7 @@
 				.after( $movedPB )
 				.remove();
 
-			pbtt[oldZone].tabs.children(":not(.hide):first").addClass("active");
-			pbtt[oldZone].wrapper.children(":not(.hide-if-js):first").addClass("active");
-
-			updateHeight( pbtt[oldZone].wrapper );
+			pbtt[oldZone].tabs.children(":not(.hide):first").click();
 		}
 
 
@@ -224,7 +223,7 @@
 
 	/**
 	 * Update the tabs when new postbox from different zone
-	 * @since TODO version
+	 * @since 1.1
 	 */
 	function receivePostbox() {
 
