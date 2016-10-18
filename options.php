@@ -10,7 +10,7 @@ function pbtt_settings_init() {
 
 	add_settings_section(
 	'pbtt_options_active',
-	__( "Activate", 'pbtt-domain' ),
+	__( "Enable", 'pbtt' ),
 	'pbtt_options_active_desc',
 	'pbtt'
 	);
@@ -18,7 +18,7 @@ function pbtt_settings_init() {
 
 	add_settings_field(
 		'pbtt_options_posttypes',
-		__( "Post types", 'pbtt-domain' ),
+		__( "Post types", 'pbtt' ),
 		'pbtt_options_posttypes_fields',
 		'pbtt',
 		'pbtt_options_active'
@@ -26,7 +26,7 @@ function pbtt_settings_init() {
 
 	add_settings_field(
 		'pbtt_options_zones',
-		__( "Postbox zones", 'pbtt-domain' ),
+		__( "Postbox zones", 'pbtt' ),
 		'pbtt_options_zone_fields',
 		'pbtt',
 		'pbtt_options_active'
@@ -36,7 +36,7 @@ add_action('admin_init', 'pbtt_settings_init');
 
 // section content cb
 function pbtt_options_active_desc() {
-	_e( "Select where the plugin should be active.", 'pbtt-domain' );
+	_e( "Select where the plugin is enabled.", 'pbtt' );
 }
 
 function pbtt_options_posttypes_fields() {
@@ -63,9 +63,9 @@ function pbtt_options_posttypes_fields() {
 function pbtt_options_zone_fields() {
 
 	$zones = array(
-		'normal'		=> __( "Normal <em>(below post content)</em>.", 'pbtt-domain' ),
-		'advanced'	=> __( "Advanced <em>(below normal zone)</em>.", 'pbtt-domain' ),
-		'side'			=> __( "Side <em>(next to post content)</em>.", 'pbtt-domain' ),
+		'normal'		=> __( "Normal <em>(below post content)</em>.", 'pbtt' ),
+		'advanced'	=> __( "Advanced <em>(below normal zone)</em>.", 'pbtt' ),
+		'side'			=> __( "Side <em>(next to post content)</em>.", 'pbtt' ),
 	);
 
 	$check = get_option( 'pbtt_zone' );
@@ -91,8 +91,8 @@ function pbtt_options_zone_fields() {
 function pbtt_options_page() {
 	add_submenu_page(
 		'tools.php',
-		__( "Postbox to Tab options", 'pbtt-domain' ),
-		__( "Postbox to Tab", 'pbtt-domain' ),
+		__( "Postbox to Tab options", 'pbtt' ),
+		__( "Postbox to Tab", 'pbtt' ),
 		'manage_options',
 		'pbtt',
 		'pbtt_options_page_html'
