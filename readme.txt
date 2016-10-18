@@ -16,8 +16,9 @@ Postbox to Tab convert the list of postboxes into a tabbed menu which gives you 
 == Installation ==
 To install, simply:
 
-1. Upload the \'postbox-to-tab\' directory to your \'/wp-content/plugins/\' directory, using your favorite method (ftp, sftp, scp, etc...)
+1. Upload the \postbox-to-tab\ directory to your /wp-content/plugins/ directory, using your favorite method (ftp, sftp, scp, etc...)
 2. Activate Postbox-to-Tab from your Plugins page.
+3. Use the Tools->Postbox to tab screen to configure the plugin
 
 == Screenshots ==
 1. The postboxes in normal zone (under the body) are displayed in tabs.
