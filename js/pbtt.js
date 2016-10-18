@@ -179,9 +179,12 @@
 	*/
 	function sortUpdate( event, ui ) {
 
-		var $el				= ui.item;
+		// Avoid the second event fire when sorting from connected lists
+		if ( isset(ui.sender) )
+			return;
 
-		var	newPos		= $el.index(),
+		var $el				= ui.item,
+				newPos		= $el.index(),
 				oldPos		= $el.data('pos'),
 				oldParent	= $el.data("parent"),
 				newParent	= $el.parent().prop('id'),
@@ -197,12 +200,11 @@
 			if			( 0 		 === newPos )	{ pbtt[newZone].wrapper.prepend($movedPB); }
 			else if	( nbTabs === newPos )	{ pbtt[newZone].wrapper.append($movedPB); }
 			else													{ pbtt[newZone].wrapper.children().eq(newPos-1).after( $movedPB ); }
-			updateHeight( pbtt[newZone].wrapper );
+
+			$el.click();
 
 			if ( oldZone !== newZone ) {
-				pbtt[oldZone].tabs.children(":not(.hide):first").addClass("active");
-				pbtt[oldZone].wrapper.children(":not(.hide-if-js):first").addClass("active");
-				updateHeight( pbtt[oldZone].wrapper );
+				pbtt[oldZone].tabs.children(":not(.hide):first").click();
 			}
 		}
 		else {
@@ -211,10 +213,7 @@
 				.after( $movedPB )
 				.remove();
 
-			pbtt[oldZone].tabs.children(":not(.hide):first").addClass("active");
-			pbtt[oldZone].wrapper.children(":not(.hide-if-js):first").addClass("active");
-
-			updateHeight( pbtt[oldZone].wrapper );
+			pbtt[oldZone].tabs.children(":not(.hide):first").click();
 		}
 
 
