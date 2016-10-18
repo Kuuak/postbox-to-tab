@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:		Postbox to Tab
- * Description: 	Convert the sortable post boxes into a tabbed menu.
+ * Description: 	Convert postboxes vertical list into a tabbed menu.
  * Author: 				Felipe Paul Martins - Opus Magnum
  * Version: 			1.0.2
  * Author URI:		https://opusmagnum.ch

@@ -20,8 +20,10 @@ To install, simply:
 2. Activate Postbox-to-Tab from your Plugins page.
 
 == Screenshots ==
-1. The postboxes under the body are displayed in tabs
-2. The postboxes under the body are displayed in tabs
+1. The postboxes in normal zone (under the body) are displayed in tabs.
+2. The postboxes in the three zones (normal, advanced and side) are displayed in tabs.
+3. Comparison when plugin enabled an not enabled.
+4. Plugin options, possibility to enable it, or not, for each post types (including custom post types) and for each postbox zone.
 
 == Changelog ==
 
